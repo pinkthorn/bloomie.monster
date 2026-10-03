@@ -1,5 +1,5 @@
 # bloomie.monster
 
-![assets/bloomienluci.png]
+![bloomnlu](assets/bloomienluci.png)
 
 my personal website &lt;3
