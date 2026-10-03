@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>⚡ BLOOM-OS v2.6 // Spooky Cutie Sanctuary ⚡</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="script.js" defer></script>
+
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Creepster&family=Fredoka:wght@400;500;600...">
+    </head>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        void: '#0a080d',
+                        voidCard: '#130f1a',
+                        voidDark: '#070509',
+                        bubblePink: '#ff66b2',
+                        hotPink: '#ff007f',
+                        slimeGreen: '#00ff99',
+                        acidGreen: '#aaff00',
+                        gothPurple: '#2a1a3a',
+                        deepGoth: '#180e24',
+                        lavender: '#c084fc',
+                        darkBorder: '#3e2459'
+                    },
+                    fontFamily: {
+                        pixel: ['"Press Start 2P"', 'cursive'],
+                        retro: ['VT323', 'monospace'],
+                        cute: ['Fredoka', 'sans-serif'],
+                        mono: ['"Space Mono"', 'monospace'],
+                        creepy: ['Creepster', 'cursive']
+                    },
+                    boxShadow: {
+                        'pink-glow': '0 0 15px rgba(255, 102, 178, 0.4), inset 0 0 10px rgba(255, 102, 178, 0.15)',
+                        'green-glow': '0 0 15px rgba(0, 255, 153, 0.4)',
+                        'purple-glow': '0 0 20px rgba(192, 132, 252, 0.3)',
+                        'window-pink': '6px 6px 0px #ff66b2',
+                        'window-green': '6px 6px 0px #00ff99',
+                        'window-dark': '6px 6px 0px #000000'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a080d;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ff66b2;
+            border-radius: 4px;
+            border: 1px solid #0a080d;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00ff99;
+        }
+
+        /* Hypnotic Spiral Background Overlay */
+        .spiral-bg {
+            background: radial-gradient(circle, repeating-conic-gradient(#ff66b2 0 15deg, #0a080d 15deg 30deg));
+            animation: spinSpiral 30s linear infinite;
+            opacity: 0.08;
+        }
+
+        @keyframes spinSpiral {
+            0% { transform: scale(3.5) rotate(0deg); }
+            100% { transform: scale(3.5) rotate(360deg); }
+        }
+
+        /* Floating Animation */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-6px) rotate(2deg); }
+        }
+
+        .floating {
+            animation: floatSlow 4s ease-in-out infinite;
+        }
+
+        .floating-delayed {
+            animation: floatSlow 5s ease-in-out 1.5s infinite;
+        }
+
+        /* Particle Canvas Overlay */
+        #fxCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Desktop Window System Styles */
+        .os-window {
+            position: absolute;
+            transition: transform 0.05s ease, opacity 0.2s ease, width 0.2s ease, height 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid #ff66b2;
+            background-color: rgba(19, 15, 26, 0.96);
+            backdrop-filter: blur(12px);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(255,102,178,0.25);
+        }
+
+        .os-window.theme-green {
+            border-color: #00ff99;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(0,255,153,0.25);
+        }
+
+        .os-window.theme-purple {
+            border-color: #c084fc;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(192,132,252,0.25);
+        }
+
+        .window-header {
+            background: linear-gradient(90deg, #ff66b2 0%, #2a1a3a 100%);
+            cursor: move;
+            user-select: none;
+        }
+
+        .theme-green .window-header {
+            background: linear-gradient(90deg, #00ff99 0%, #180e24 100%);
+        }
+
+        .theme-purple .window-header {
+            background: linear-gradient(90deg, #c084fc 0%, #2a1a3a 100%);
+        }
+
+        /* CRT Scanline Effect (Toggleable) */
+        .crt-overlay::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 9990;
+            background-size: 100% 3px, 6px 100%;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        /* 3D Tilt Card Base */
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+        .tilt-card:hover {
+            transform: translateY(-4px) rotateX(4deg) rotateY(-4deg);
+        }
+    </style>
+</head>
+
+<body class="bg-void text-gray-200 font-cute selection:bg-bubblePink selection:text-black min-h-screen relative overflow-hidden select-none crt-overlay" id="osBody">
+
+    <!-- Interactive Canvas FX Layer -->
+    <canvas id="fxCanvas"></canvas>
+
+    <!-- Hypnotic Animated Spiral Background -->
+    <div id="spiralOverlay" class="fixed inset-0 spiral-bg pointer-events-none z-0 transition-opacity duration-700"></div>
+
+    <!-- Desktop Watermark Logo -->
+    <div class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none z-0 opacity-15">
+        <h1 class="font-creepy text-7xl md:text-9xl text-bubblePink tracking-widest">BLOOM-OS</h1>
+        <p class="font-pixel text-xs md:text-sm text-slimeGreen mt-2 tracking-widest">SPOOKY OOKY CUTIE PATOOTIE V2.6</p>
+    </div>
+
+    <!-- MAIN DESKTOP ICON GRID -->
+    <main class="relative z-10 p-4 md:p-6 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 lg:grid-cols-8 gap-4 max-w-full h-[calc(100vh-50px)] overflow-y-auto align-start content-start" id="desktopGrid">
+
+        <!-- Icon 1: Pink Thorn Trading Co -->
+        <button onclick="openWindow('win-dinos')" class="group flex flex-col items-center justify-center p-3 rounded-2xl bg-voidCard/60 border border-darkBorder hover:border-bubblePink hover:bg-gothPurple/80 transition duration-200 text-center shadow-md">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-bubblePink/30 to-gothPurple border border-bubblePink/50 flex items-center justify-center text-3xl group-hover:scale-110 transition duration-200 mb-2 shadow-pink-glow">
+                🦖
+            </div>
+            <span class="font-pixel text-[10px] text-bubblePink group-hover:text-white leading-tight">Pink Thorn Co.</span>
+            <span class="font-mono text-[9px] text-gray-400 mt-0.5">ARK Breeder</span>
+        </button>
+
+        <!-- Icon 2: Bloomie's Obsessions Player -->
+        <button onclick="openWindow('win-music')" class="group flex flex-col items-center justify-center p-3 rounded-2xl bg-voidCard/60 border border-darkBorder hover:border-slimeGreen hover:bg-gothPurple/80 transition duration-200 text-center shadow-md">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-slimeGreen/30 to-gothPurple border border-slimeGreen/50 flex items-center justify-center text-3xl group-hover:scale-110 transition duration-200 mb-2 shadow-green-glow">
+                🎧
+            </div>
+            <span class="font-pixel text-[10px] text-slimeGreen group-hover:text-white leading-tight">Obsessions</span>
+            <span class="font-mono text-[9px] text-gray-400 mt-0.5">Jukebox Radio</span>
+        </button>
+
+        <!-- Icon 3: Crystal & Tarot Room -->
+        <button onclick="openWindow('win-tarot')" class="group flex flex-col items-center justify-center p-3 rounded-2xl bg-voidCard/60 border border-darkBorder hover:border-lavender hover:bg-gothPurple/80 transition duration-200 text-center shadow-md">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-lavender/30 to-gothPurple border border-lavender/50 flex items-center justify-center text-3xl group-hover:scale-110 transition duration-200 mb-2 shadow-purple-glow">
+                🔮
+            </div>
+            <span class="font-pixel text-[10px] text-lavender group-hover:text-white leading-tight">Crystal Room</span>
+            <span class="font-mono text-[9px] text-gray-400 mt-0.5">Tarot & Gems</span>
+        </button>
+
+        <!-- Icon 4: Feline Familiars -->
+        <button onclick="openWindow('win-pets')" class="group flex flex-col items-center justify-center p-3 rounded-2xl bg-voidCard/60 border border-darkBorder hover:border-bubblePink hover:bg-gothPurple/80 transition duration-200 text-center shadow-md">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-bubblePink/30 to-gothPurple border border-bubblePink/50 flex items-center justify-center text-3xl group-hover:scale-110 transition duration-200 mb-2 shadow-pink-glow">
+                🐈‍⬛
+            </div>
+            <span class="font-pixel text-[10px] text-bubblePink group-hover:text-white leading-tight">Familiars</span>
+            <span class="font-mono text-[9px] text-gray-400 mt-0.5">Pet Sanctuary</span>
+        </button>
+
+        <!-- Icon 5: Obsidian Pad -->
+        <button onclick="openWindow('win-notes')" class="group flex flex-col items-center justify-center p-3 rounded-2xl bg-voidCard/60 border border-darkBorder hover:border-acidGreen hover:bg-gothPurple/80 transition duration-200 text-center shadow-md">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-acidGreen/30 to-gothPurple border border-acidGreen/50 flex items-center justify-center text-3xl group-hover:scale-110 transition duration-200 mb-2">
+                ✍️
+            </div>
+            <span class="font-pixel text-[10px] text-acidGreen group-hover:text-white leading-tight">Obsidian Pad</span>
+            <span class="font-mono text-[9px] text-gray-400 mt-0.5">Markdown Notes</span>
+        </button>
+
+        <!-- Icon 6: Cyber Terminal -->
+        <button onclick="openWindow('win-terminal')" class="group flex flex-col items-center justify-center p-3 rounded-2xl bg-voidCard/60 border border-darkBorder hover:border-slimeGreen hover:bg-gothPurple/80 transition duration-200 text-center shadow-md">
+            <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-slimeGreen/30 to-gothPurple border border-slimeGreen/50 flex items-center justify-center text-3xl group-hover:scale-110 transition duration-200 mb-2 shadow-green-glow">
+                💻
+            </div>
+            <span class="font-pixel text-[10px] text-slimeGreen group-hover:text-white leading-tight">Terminal</span>
+            <span class="font-mono text-[9px] text-gray-400 mt-0.5">Command & Guest</span>
+        </button>
+
+    </main>
+
+    <!-- WINDOW 1: PINK THORN TRADING CO. (ARK DINOSAUR BREEDER) -->
+    <div id="win-dinos" class="os-window w-[92vw] sm:w-[580px] h-[520px] top-[40px] left-[15px] sm:left-[60px] hidden z-20">
+        <div class="window-header px-4 py-2 flex items-center justify-between text-black">
+            <span class="font-pixel text-xs font-bold flex items-center gap-2">
+                <i class="fa-solid fa-dragon"></i> Pink_Thorn_Co_Catalog.exe
+            </span>
+            <div class="flex items-center gap-2">
+                <button onclick="minimizeWindow('win-dinos')" class="w-5 h-5 bg-black/30 hover:bg-black/60 rounded text-white text-xs font-bold">-</button>
+                <button onclick="closeWindow('win-dinos')" class="w-5 h-5 bg-red-600 hover:bg-red-700 rounded text-white text-xs font-bold">×</button>
+            </div>
+        </div>
+        <div class="p-4 overflow-y-auto flex-1 space-y-4">
+            <div class="bg-gothPurple/40 border border-bubblePink/30 p-3 rounded-xl flex items-center justify-between">
+                <div>
+                    <h3 class="font-pixel text-xs text-bubblePink">PINK THORN TRADING CO.</h3>
+                    <p class="font-mono text-[11px] text-gray-300">Mutant Dinosaur Color Line Catalog & Stat Calculator</p>
+                </div>
+                <span class="px-2 py-1 bg-bubblePink text-black font-pixel text-[9px] rounded">ARK: ASA</span>
+            </div>
+
+            <!-- Dino Breed Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <!-- Dino Card 1 -->
+                <div class="bg-voidDark border border-darkBorder hover:border-bubblePink p-3 rounded-xl space-y-2">
+                    <div class="flex justify-between items-start">
+                        <span class="text-2xl">🦖</span>
+                        <span class="px-2 py-0.5 bg-bubblePink/20 text-bubblePink font-mono text-[10px] rounded border border-bubblePink/30">MUTATED</span>
+                    </div>
+                    <h4 class="font-pixel text-xs text-white">Pink Thorn Rex</h4>
+                    <p class="font-cute text-xs text-gray-400">Deep Magenta Body • Slime Green Spine • 254 Health Mutations</p>
+                    <div class="w-full bg-black rounded-full h-2 overflow-hidden border border-bubblePink/20">
+                        <div class="bg-gradient-to-r from-bubblePink to-slimeGreen h-full w-[88%]"></div>
+                    </div>
+                </div>
+                <!-- Dino Card 2 -->
+                <div class="bg-voidDark border border-darkBorder hover:border-slimeGreen p-3 rounded-xl space-y-2">
+                    <div class="flex justify-between items-start">
+                        <span class="text-2xl">🦅</span>
+                        <span class="px-2 py-0.5 bg-slimeGreen/20 text-slimeGreen font-mono text-[10px] rounded border border-slimeGreen/30">TOP SPEED</span>
+                    </div>
+                    <h4 class="font-pixel text-xs text-white">Neon Argentavis</h4>
+                    <p class="font-cute text-xs text-gray-400">Toxic Lime Feathers • Hot Pink Tips • 210 Stamina Points</p>
+                    <div class="w-full bg-black rounded-full h-2 overflow-hidden border border-slimeGreen/20">
+                        <div class="bg-gradient-to-r from-slimeGreen to-acidGreen h-full w-[94%]"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Breeding Mutation Calculator -->
+            <div class="bg-voidDark/80 border border-bubblePink/30 p-3.5 rounded-xl space-y-3">
+                <h4 class="font-pixel text-[11px] text-slimeGreen flex items-center gap-2">
+                    <i class="fa-solid fa-calculator"></i> Mutation Probability Calculator
+                </h4>
+                <div class="grid grid-cols-2 gap-2 text-xs font-mono">
+                    <div>
+                        <label class="text-gray-400 block mb-1">Matriarch Mutations:</label>
+                        <input id="matMut" type="number" value="12" class="w-full bg-black border border-darkBorder p-1.5 rounded text-bubblePink font-mono text-xs">
+                    </div>
+                    <div>
+                        <label class="text-gray-400 block mb-1">Patriarch Mutations:</label>
+                        <input id="patMut" type="number" value="8" class="w-full bg-black border border-darkBorder p-1.5 rounded text-slimeGreen font-mono text-xs">
+                    </div>
+                </div>
+                <button onclick="calculateBreeding()" class="w-full py-2 bg-gradient-to-r from-bubblePink to-slimeGreen text-black font-pixel text-[10px] rounded hover:opacity-90 transition">
+                    SIMULATE EGG HATCH 🥚
+                </button>
+                <div id="breedResult" class="p-2 bg-black/60 rounded font-mono text-xs text-center text-lavender border border-darkBorder">
+                    Ready to hatch new color lines...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WINDOW 2: BLOOMIE'S OBSESSIONS MEDIA PLAYER -->
+    <div id="win-music" class="os-window theme-green w-[92vw] sm:w-[480px] h-[520px] top-[60px] left-[20px] sm:left-[180px] hidden z-20">
+        <div class="window-header px-4 py-2 flex items-center justify-between text-black">
+            <span class="font-pixel text-xs font-bold flex items-center gap-2">
+                <i class="fa-solid fa-headphones"></i> Bloomie_Obsessions.exe
+            </span>
+            <div class="flex items-center gap-2">
+                <button onclick="minimizeWindow('win-music')" class="w-5 h-5 bg-black/30 hover:bg-black/60 rounded text-white text-xs font-bold">-</button>
+                <button onclick="closeWindow('win-music')" class="w-5 h-5 bg-red-600 hover:bg-red-700 rounded text-white text-xs font-bold">×</button>
+            </div>
+        </div>
+        <div class="p-4 overflow-y-auto flex-1 space-y-4">
+            
+            <!-- Album Art Display -->
+            <div class="bg-voidDark border border-slimeGreen/40 p-4 rounded-xl text-center space-y-3 relative overflow-hidden">
+                <div class="w-28 h-28 mx-auto rounded-2xl bg-gothPurple border-2 border-slimeGreen/60 flex items-center justify-center text-5xl shadow-green-glow relative group">
+                    <span id="musicDiscIcon" class="floating">🎧</span>
+                    <div class="absolute inset-0 bg-slimeGreen/10 rounded-2xl"></div>
+                </div>
+                <div>
+                    <h3 id="playerTrackTitle" class="font-pixel text-sm text-slimeGreen truncate">G59 Dark Trap Chill</h3>
+                    <p id="playerTrackArtist" class="font-mono text-xs text-gray-400">Shadow Rap Ambient Station</p>
+                </div>
+
+                <!-- Animated Equalizer Waveform -->
+                <div class="flex items-end justify-center gap-1.5 h-8 pt-2" id="winEqBars">
+                    <div class="w-2 bg-slimeGreen h-3 transition-all duration-200 rounded-t"></div>
+                    <div class="w-2 bg-bubblePink h-6 transition-all duration-200 rounded-t"></div>
+                    <div class="w-2 bg-lavender h-4 transition-all duration-200 rounded-t"></div>
+                    <div class="w-2 bg-slimeGreen h-7 transition-all duration-200 rounded-t"></div>
+                    <div class="w-2 bg-bubblePink h-5 transition-all duration-200 rounded-t"></div>
+                    <div class="w-2 bg-acidGreen h-3 transition-all duration-200 rounded-t"></div>
+                </div>
+            </div>
+
+            <!-- Player Track List -->
+            <div class="space-y-1.5 max-h-40 overflow-y-auto border border-darkBorder rounded-xl p-2 bg-voidDark/60">
+                <button onclick="playSpecificTrack(0)" class="w-full text-left p-2 rounded hover:bg-gothPurple/60 font-mono text-xs text-bubblePink flex justify-between items-center border-b border-darkBorder/40">
+                    <span>1. $uicideboy$ Vibe Loop</span> <span class="text-[10px] text-gray-500">2:45</span>
+                </button>
+                <button onclick="playSpecificTrack(1)" class="w-full text-left p-2 rounded hover:bg-gothPurple/60 font-mono text-xs text-slimeGreen flex justify-between items-center border-b border-darkBorder/40">
+                    <span>2. ARK Redwoods Ambient Ambient</span> <span class="text-[10px] text-gray-500">3:12</span>
+                </button>
+                <button onclick="playSpecificTrack(2)" class="w-full text-left p-2 rounded hover:bg-gothPurple/60 font-mono text-xs text-lavender flex justify-between items-center">
+                    <span>3. Whimsigoth Midnight Purr</span> <span class="text-[10px] text-gray-500">4:01</span>
+                </button>
+            </div>
+
+            <!-- Player Controls -->
+            <div class="flex gap-2">
+                <button id="playerPlayBtn" onclick="toggleOSPlayer()" class="flex-1 py-2.5 bg-slimeGreen text-black font-pixel text-xs rounded-xl hover:bg-bubblePink transition font-bold shadow-window-dark">
+                    ▶ PLAY MUSIC
+                </button>
+                <button onclick="nextOSTrack()" class="px-4 py-2.5 bg-gothPurple text-lavender font-pixel text-xs rounded-xl border border-lavender/40 hover:text-white">
+                    ⏭
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WINDOW 3: CRYSTAL VAULT & TAROT ROOM -->
+    <div id="win-tarot" class="os-window theme-purple w-[92vw] sm:w-[580px] h-[540px] top-[50px] left-[25px] sm:left-[280px] hidden z-20">
+        <div class="window-header px-4 py-2 flex items-center justify-between text-black">
+            <span class="font-pixel text-xs font-bold flex items-center gap-2">
+                <i class="fa-solid fa-gem"></i> Crystal_Vault_&_Tarot.exe
+            </span>
+            <div class="flex items-center gap-2">
+                <button onclick="minimizeWindow('win-tarot')" class="w-5 h-5 bg-black/30 hover:bg-black/60 rounded text-white text-xs font-bold">-</button>
+                <button onclick="closeWindow('win-tarot')" class="w-5 h-5 bg-red-600 hover:bg-red-700 rounded text-white text-xs font-bold">×</button>
+            </div>
+        </div>
+        <div class="p-4 overflow-y-auto flex-1 space-y-4">
+            
+            <!-- Tarot Reading Deck -->
+            <div class="bg-voidDark border border-lavender/40 p-4 rounded-xl text-center space-y-3">
+                <h3 class="font-pixel text-xs text-lavender flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-spaghetti"></i> DAILY 3-CARD SPOOKY TAROT DRAWER
+                </h3>
+
+                <div class="grid grid-cols-3 gap-2 py-2" id="tarotCardsContainer">
+                    <div class="bg-gothPurple/80 border-2 border-lavender rounded-xl p-3 h-32 flex flex-col items-center justify-center tilt-card cursor-pointer" onclick="drawTarotCard(0)">
+                        <span class="text-3xl">🎴</span>
+                        <span class="font-mono text-[10px] text-gray-300 mt-2">PAST</span>
+                    </div>
+                    <div class="bg-gothPurple/80 border-2 border-lavender rounded-xl p-3 h-32 flex flex-col items-center justify-center tilt-card cursor-pointer" onclick="drawTarotCard(1)">
+                        <span class="text-3xl">🎴</span>
+                        <span class="font-mono text-[10px] text-gray-300 mt-2">PRESENT</span>
+                    </div>
+                    <div class="bg-gothPurple/80 border-2 border-lavender rounded-xl p-3 h-32 flex flex-col items-center justify-center tilt-card cursor-pointer" onclick="drawTarotCard(2)">
+                        <span class="text-3xl">🎴</span>
+                        <span class="font-mono text-[10px] text-gray-300 mt-2">FUTURE</span>
+                    </div>
+                </div>
+
+                <button onclick="drawAllTarot()" class="px-4 py-2 bg-lavender text-black font-pixel text-[10px] rounded-xl hover:bg-bubblePink transition">
+                    🔮 DRAW SPRAY READING
+                </button>
+            </div>
+
+            <!-- Crystal Gallery Grid -->
+            <div class="space-y-2">
+                <h4 class="font-pixel text-xs text-bubblePink">💎 BLOOMIE'S CRYSTAL STASH</h4>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    <div class="bg-voidDark border border-darkBorder p-2.5 rounded-xl text-center hover:border-bubblePink transition">
+                        <span class="text-2xl block mb-1">🌸</span>
+                        <span class="font-mono text-[11px] text-bubblePink font-bold block">Flower Agate</span>
+                        <span class="font-cute text-[10px] text-gray-400">Growth & Joy</span>
+                    </div>
+                    <div class="bg-voidDark border border-darkBorder p-2.5 rounded-xl text-center hover:border-slimeGreen transition">
+                        <span class="text-2xl block mb-1">🟢</span>
+                        <span class="font-mono text-[11px] text-slimeGreen font-bold block">Fluorite</span>
+                        <span class="font-cute text-[10px] text-gray-400">Clarity & Focus</span>
+                    </div>
+                    <div class="bg-voidDark border border-darkBorder p-2.5 rounded-xl text-center hover:border-hotPink transition">
+                        <span class="text-2xl block mb-1">🔥</span>
+                        <span class="font-mono text-[11px] text-hotPink font-bold block">Fire Quartz</span>
+                        <span class="font-cute text-[10px] text-gray-400">Vitality & Fire</span>
+                    </div>
+                    <div class="bg-voidDark border border-darkBorder p-2.5 rounded-xl text-center hover:border-lavender transition">
+                        <span class="text-2xl block mb-1">🌊</span>
+                        <span class="font-mono text-[11px] text-lavender font-bold block">Ocean Jasper</span>
+                        <span class="font-cute text-[10px] text-gray-400">Calm Waves</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- WINDOW 4: FELINE FAMILIARS PET SANCTUARY -->
+    <div id="win-pets" class="os-window w-[92vw] sm:w-[500px] h-[500px] top-[70px] left-[10px] sm:left-[350px] hidden z-20">
+        <div class="window-header px-4 py-2 flex items-center justify-between text-black">
+            <span class="font-pixel text-xs font-bold flex items-center gap-2">
+                <i class="fa-solid fa-cat"></i> Familiars_Sanctuary.exe
+            </span>
+            <div class="flex items-center gap-2">
+                <button onclick="minimizeWindow('win-pets')" class="w-5 h-5 bg-black/30 hover:bg-black/60 rounded text-white text-xs font-bold">-</button>
+                <button onclick="closeWindow('win-pets')" class="w-5 h-5 bg-red-600 hover:bg-red-700 rounded text-white text-xs font-bold">×</button>
+            </div>
+        </div>
+        <div class="p-4 overflow-y-auto flex-1 space-y-4">
+            
+            <!-- Pet Selector Tabs -->
+            <div class="flex gap-2 border-b border-darkBorder pb-2">
+                <button id="tabLucifer" onclick="switchPet('lucifer')" class="flex-1 py-1.5 bg-gothPurple text-bubblePink border border-bubblePink/40 rounded-xl font-pixel text-[10px]">
+                    🐈‍⬛ Lucifer (Tuxedo)
+                </button>
+                <button id="tabOzzie" onclick="switchPet('ozzie')" class="flex-1 py-1.5 bg-voidDark text-gray-400 border border-darkBorder rounded-xl font-pixel text-[10px]">
+                    🖤 Ozzie (Void)
+                </button>
+            </div>
+
+            <!-- Pet Stage Arena -->
+            <div class="bg-voidDark border border-bubblePink/40 rounded-2xl p-6 text-center space-y-3 relative overflow-hidden">
+                <div id="petEmote" class="text-6xl cursor-pointer select-none inline-block floating hover:scale-125 transition duration-200" onclick="patPet(event)">
+                    🐈‍⬛
+                </div>
+                <div>
+                    <h3 id="petNameTitle" class="font-pixel text-sm text-bubblePink">Lucifer</h3>
+                    <p id="petMoodText" class="font-mono text-xs text-slimeGreen">Mood: Purring & Ready for Headpats ✨</p>
+                </div>
+
+                <!-- Stats Gauges -->
+                <div class="space-y-2 pt-2 max-w-xs mx-auto">
+                    <div>
+                        <div class="flex justify-between font-mono text-[10px] text-gray-300 mb-1">
+                            <span>Love Level</span> <span id="loveVal">85%</span>
+                        </div>
+                        <div class="w-full bg-black rounded-full h-2 overflow-hidden border border-bubblePink/30">
+                            <div id="loveBar" class="bg-bubblePink h-full w-[85%] transition-all duration-300"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between font-mono text-[10px] text-gray-300 mb-1">
+                            <span>Tuna Treat Energy</span> <span id="treatVal">60%</span>
+                        </div>
+                        <div class="w-full bg-black rounded-full h-2 overflow-hidden border border-slimeGreen/30">
+                            <div id="treatBar" class="bg-slimeGreen h-full w-[60%] transition-all duration-300"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="grid grid-cols-2 gap-2">
+                <button onclick="patPet(event)" class="py-2.5 bg-gothPurple border border-bubblePink/50 text-bubblePink font-pixel text-[10px] rounded-xl hover:bg-bubblePink hover:text-black transition">
+                    💖 HEADPAT
+                </button>
+                <button onclick="feedPet()" class="py-2.5 bg-gothPurple border border-slimeGreen/50 text-slimeGreen font-pixel text-[10px] rounded-xl hover:bg-slimeGreen hover:text-black transition">
+                    🐟 GIVE TUNA TREAT
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WINDOW 5: OBSIDIAN NOTE PAD -->
+    <div id="win-notes" class="os-window theme-green w-[92vw] sm:w-[540px] h-[480px] top-[80px] left-[15px] sm:left-[220px] hidden z-20">
+        <div class="window-header px-4 py-2 flex items-center justify-between text-black">
+            <span class="font-pixel text-xs font-bold flex items-center gap-2">
+                <i class="fa-solid fa-pen-to-square"></i> Obsidian_Pad.exe
+            </span>
+            <div class="flex items-center gap-2">
+                <button onclick="minimizeWindow('win-notes')" class="w-5 h-5 bg-black/30 hover:bg-black/60 rounded text-white text-xs font-bold">-</button>
+                <button onclick="closeWindow('win-notes')" class="w-5 h-5 bg-red-600 hover:bg-red-700 rounded text-white text-xs font-bold">×</button>
+            </div>
+        </div>
+        <div class="p-4 overflow-y-auto flex-1 space-y-3 flex flex-col">
+            
+            <div class="flex justify-between items-center gap-2">
+                <span class="font-mono text-xs text-slimeGreen">Theme Preset:</span>
+                <select id="noteThemeSelect" onchange="changeNoteTheme()" class="bg-black border border-darkBorder text-bubblePink font-mono text-xs rounded px-2 py-1 outline-none">
+                    <option value="dark">Bloomie's Lighter (Dark Void)</option>
+                    <option value="pink">GuroKawaii Pink Mode</option>
+                    <option value="toxic">Slime Toxic Mode</option>
+                </select>
+            </div>
+
+            <!-- Text Area -->
+            <textarea id="notePadArea" class="w-full flex-1 bg-black/80 border border-darkBorder p-3 rounded-xl font-mono text-xs text-gray-200 outline-none focus:border-slimeGreen resize-none leading-relaxed" placeholder="// Write down dark trap lyrics, ARK stats, or crystal notes...">
+                    # ⚡ Bloomie's Spooky Vault Notes
+                    - [x] Breed pink mutated Rex line
+- [x] Feed Lucifer & Ozzie tuna treats
+- [ ] Listen to new $uicideboy$ release
+- [x] Restock Flower Agate & Fire Quartz crystals
+            </textarea>
+
+            <div class="flex justify-between items-center text-xs font-mono text-gray-400">
+                <span id="noteCharCount">Chars: 168</span>
+                <button onclick="clearNotes()" class="px-3 py-1 bg-red-950 border border-red-500 text-red-300 rounded text-[10px] hover:bg-red-800">Clear</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- WINDOW 6: CYBER TERMINAL & GUESTBOOK -->
+    <div id="win-terminal" class="os-window w-[92vw] sm:w-[600px] h-[500px] top-[30px] left-[10px] sm:left-[150px] hidden z-20">
+        <div class="window-header px-4 py-2 flex items-center justify-between text-black">
+            <span class="font-pixel text-xs font-bold flex items-center gap-2">
+                <i class="fa-solid fa-terminal"></i> Bloom_Terminal_v2.6.exe
+            </span>
+            <div class="flex items-center gap-2">
+                <button onclick="minimizeWindow('win-terminal')" class="w-5 h-5 bg-black/30 hover:bg-black/60 rounded text-white text-xs font-bold">-</button>
+                <button onclick="closeWindow('win-terminal')" class="w-5 h-5 bg-red-600 hover:bg-red-700 rounded text-white text-xs font-bold">×</button>
+            </div>
+        </div>
+        <div class="p-4 bg-black font-mono text-xs text-slimeGreen flex-1 flex flex-col justify-between overflow-hidden">
+            
+            <!-- Terminal Output Window -->
+            <div id="termOutput" class="overflow-y-auto flex-1 space-y-2 pr-2 mb-3 leading-relaxed">
+                <p class="text-bubblePink font-pixel text-[10px]">BLOOM-OS Cybernetic Shell v2.6 Ready.</p>
+                <p class="text-gray-400">Type <span class="text-slimeGreen font-bold">'help'</span> for available commands (`g59`, `dinos`, `caffeine`, `spells`).</p>
+            </div>
+
+            <!-- Command Prompt Input -->
+            <div class="flex items-center gap-2 border-t border-slimeGreen/30 pt-2">
+                <span class="text-bubblePink font-bold">bloomie@vault:~$</span>
+                <input id="termInput" type="text" onkeydown="handleTerminalKey(event)" class="flex-1 bg-transparent border-none outline-none text-slimeGreen font-mono text-xs" focus>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTTOM SYSTEM TASKBAR -->
+    <footer class="fixed bottom-0 left-0 right-0 h-12 bg-voidCard/95 border-t-2 border-bubblePink/40 z-50 flex items-center justify-between px-3 md:px-5 backdrop-blur-md">
+        
+        <!-- Start Button -->
+        <div class="relative">
+            <button onclick="toggleStartMenu()" class="px-3 md:px-4 py-1.5 bg-gradient-to-r from-bubblePink to-gothPurple text-black font-pixel text-[11px] font-bold rounded-lg shadow-pink-glow hover:scale-105 transition duration-150 flex items-center gap-2">
+                <span>🦇</span> BLOOM
+            </button>
+
+            <!-- START MENU POPUP -->
+            <div id="startMenu" class="absolute bottom-14 left-0 w-72 bg-voidCard border-2 border-bubblePink rounded-2xl p-4 shadow-pink-glow hidden z-50 space-y-3">
+                <div class="flex items-center gap-3 border-b border-darkBorder pb-3">
+                    <div class="w-12 h-12 rounded-full border-2 border-bubblePink bg-gothPurple flex items-center justify-center text-2xl">
+                        🦇
+                    </div>
+                    <div>
+                        <h3 class="font-pixel text-xs text-bubblePink">Amissa (Bloomie)</h3>
+                        <p class="font-mono text-[10px] text-slimeGreen">Status: Unhinged Cutie ✨</p>
+                    </div>
+                </div>
+
+                <!-- System Stats Bar -->
+                <div class="space-y-2 font-mono text-[11px]">
+                    <div>
+                        <div class="flex justify-between text-gray-300">
+                            <span>Coffee Level</span> <span class="text-bubblePink">98%</span>
+                        </div>
+                        <div class="w-full bg-black rounded-full h-1.5">
+                            <div class="bg-bubblePink h-full w-[98%] rounded-full"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-gray-300">
+                            <span>Spooky Vibe Resonance</span> <span class="text-slimeGreen">100%</span>
+                        </div>
+                        <div class="w-full bg-black rounded-full h-1.5">
+                            <div class="bg-slimeGreen h-full w-[100%] rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-2 border-t border-darkBorder space-y-1">
+                    <button onclick="openWindow('win-terminal'); toggleStartMenu();" class="w-full text-left py-1.5 px-2 hover:bg-gothPurple rounded font-mono text-xs text-lavender flex items-center gap-2">
+                        <i class="fa-solid fa-terminal"></i> Open Terminal
+                    </button>
+                    <button onclick="toggleSpiral(); toggleStartMenu();" class="w-full text-left py-1.5 px-2 hover:bg-gothPurple rounded font-mono text-xs text-bubblePink flex items-center gap-2">
+                        <i class="fa-solid fa-compact-disc"></i> Toggle Hypno Spiral
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Taskbar Minimized Windows List -->
+        <div id="taskbarApps" class="flex items-center gap-2 overflow-x-auto px-2">
+            <!-- Active app tabs dynamically mirror here -->
+        </div>
+
+        <!-- Clock & Controls -->
+        <div class="flex items-center gap-3 font-mono text-xs text-lavender">
+            <button onclick="triggerMagic(event)" class="px-2 py-1 bg-gothPurple border border-bubblePink/40 rounded hover:text-white transition text-[11px]">
+                ✨ Spell
+            </button>
+            <span id="systemClock" class="bg-black/60 px-2.5 py-1 rounded border border-darkBorder">12:00 PM</span>
+        </div>
+
+    </footer>
+    </body> </html>

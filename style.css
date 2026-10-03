@@ -1,0 +1,112 @@
+   ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a080d;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ff66b2;
+            border-radius: 4px;
+            border: 1px solid #0a080d;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00ff99;
+        }
+
+        /* Hypnotic Spiral Background Overlay */
+        .spiral-bg {
+            background: radial-gradient(circle, repeating-conic-gradient(#ff66b2 0 15deg, #0a080d 15deg 30deg));
+            animation: spinSpiral 30s linear infinite;
+            opacity: 0.08;
+        }
+
+        @keyframes spinSpiral {
+            0% { transform: scale(3.5) rotate(0deg); }
+            100% { transform: scale(3.5) rotate(360deg); }
+        }
+
+        /* Floating Animation */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-6px) rotate(2deg); }
+        }
+
+        .floating {
+            animation: floatSlow 4s ease-in-out infinite;
+        }
+
+        .floating-delayed {
+            animation: floatSlow 5s ease-in-out 1.5s infinite;
+        }
+
+        /* Particle Canvas Overlay */
+        #fxCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Desktop Window System Styles */
+        .os-window {
+            position: absolute;
+            transition: transform 0.05s ease, opacity 0.2s ease, width 0.2s ease, height 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid #ff66b2;
+            background-color: rgba(19, 15, 26, 0.96);
+            backdrop-filter: blur(12px);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(255,102,178,0.25);
+        }
+
+        .os-window.theme-green {
+            border-color: #00ff99;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(0,255,153,0.25);
+        }
+
+        .os-window.theme-purple {
+            border-color: #c084fc;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(192,132,252,0.25);
+        }
+
+        .window-header {
+            background: linear-gradient(90deg, #ff66b2 0%, #2a1a3a 100%);
+            cursor: move;
+            user-select: none;
+        }
+
+        .theme-green .window-header {
+            background: linear-gradient(90deg, #00ff99 0%, #180e24 100%);
+        }
+
+        .theme-purple .window-header {
+            background: linear-gradient(90deg, #c084fc 0%, #2a1a3a 100%);
+        }
+
+        /* CRT Scanline Effect (Toggleable) */
+        .crt-overlay::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 9990;
+            background-size: 100% 3px, 6px 100%;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        /* 3D Tilt Card Base */
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+        .tilt-card:hover {
+            transform: translateY(-4px) rotateX(4deg) rotateY(-4deg);
+        }
