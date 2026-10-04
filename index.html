@@ -19,6 +19,16 @@
 
 
 <Style>
+        .spiral-bg {
+            background: radial-gradient(circle, repeating-conic-gradient(#ff66b2 0 15deg, #0a080d 15deg 30deg));
+            animation: spinSpiral 30s linear infinite;
+            opacity: 0.08;
+        }
+
+        @keyframes spinSpiral {
+            0% { transform: scale(3.5) rotate(0deg); }
+            100% { transform: scale(3.5) rotate(360deg); }
+        }
 
   body {
     background: #0d0a12f5!important;
@@ -43,12 +53,58 @@ img.bluci:hover {
 }
 
 </Style></head>
+  <script>        
+  /* 3. START MENU & HYPNO SPIRAL TOGGLE */
+        function toggleStartMenu() {
+            const menu = document.getElementById('startMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        let spiralEnabled = true;
+        function toggleSpiral() {
+            const spiral = document.getElementById('spiralOverlay');
+            spiralEnabled = !spiralEnabled;
+            spiral.style.opacity = spiralEnabled ? '0.08' : '0';
+        }
+
+          /* 3. START MENU, CRT & HYPNO SPIRAL TOGGLES */
+function toggleStartMenu() {
+    const menu = document.getElementById('startMenu');
+    menu.classList.toggle('hidden');
+}
+
+function toggleSpiral() {
+    const spiral = document.getElementById('hypnoBg');
+    const btn = document.getElementById('hypnoBtn');
+    spiralEnabled = !spiralEnabled;
+    if (spiral) spiral.style.opacity = spiralEnabled ? '0.1' : '0';
+    if (btn) {
+        btn.style.opacity = spiralEnabled ? '1' : '0.4';
+    }
+}
+
+let crtEnabled = true;
+function toggleCRT() {
+    const body = document.getElementById('osBody');
+    const btn = document.getElementById('crtBtn');
+    crtEnabled = !crtEnabled;
+    if (crtEnabled) {
+        body.classList.add('crt-overlay');
+        if (btn) btn.style.opacity = '1';
+    } else {
+        body.classList.remove('crt-overlay');
+        if (btn) btn.style.opacity = '0.4';
+    }
+}
+
+          
+          </script>
 
   <body>
 
 <center><div style="width: 80%; align: top-center; padding: 50px;"><h1>bloomie.monster</h1>
 
-<img class="bluci" src="/assets/bloomienluci.png"><p>
+<img width="75%"class="bluci" src="/assets/bloomienluci.png"><p>
 
 my personal website &lt;3<p>
 <p>enjoy it or dont </p>
