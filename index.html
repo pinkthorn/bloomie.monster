@@ -8,6 +8,8 @@
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+      <script src="script.js" defer></script>
+
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -51,6 +53,34 @@ img.bluci:hover {
   opacity: 1.0;
   display: block;
 }
+
+
+        /* Hypnotic Spiral Background Overlay */
+        .spiral-bg {
+            background: radial-gradient(circle, repeating-conic-gradient(#ff66b2 0 15deg, #0a080d 15deg 30deg));
+            animation: spinSpiral 30s linear infinite;
+            opacity: 0.08;
+        }
+
+        @keyframes spinSpiral {
+            0% { transform: scale(3.5) rotate(0deg); }
+            100% { transform: scale(3.5) rotate(360deg); }
+        }
+
+        /* Floating Animation */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-6px) rotate(2deg); }
+        }
+
+        .floating {
+            animation: floatSlow 4s ease-in-out infinite;
+        }
+
+        .floating-delayed {
+            animation: floatSlow 5s ease-in-out 1.5s infinite;
+        }
+  
 
 </Style></head>
   <script>        
@@ -101,6 +131,7 @@ function toggleCRT() {
           </script>
 
   <body>
+    <div id="spiralOverlay" class="fixed inset-0 spiral-bg pointer-events-none z-0 transition-opacity duration-700"></div>
 
 <center><div style="width: 80%; align: top-center; padding: 50px;"><h1>bloomie.monster</h1>
 
