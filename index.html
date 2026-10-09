@@ -48,13 +48,21 @@
         }
 
         .desktop h1 {
-            font-family: 'Creepster', cursive;
-            color: #ff77b8 !important;
-            font-size: 7rem;
-            text-align: center;
-            text-shadow: 5px 2px 0px #191224B3, 1px 0px 0px #ff77b8;
-            letter-spacing: 2px;
-            line-height: 1;
+    font-family: 'Creepster', cursive;
+    color: #ff77b8 !important;
+    font-size: 7rem;
+    position: relative;
+    display: inline-block;
+    user-select: none;
+    z-index: 2;
+    margin: 0;
+    padding: 0;
+    filter: 
+        drop-shadow(5px 2px 0px #191224B3)
+        drop-shadow(1px 0px 0px #ff77b8); 	
+    letter-spacing: 2px;
+    line-height: 1;
+    -webkit-text-stroke: 0px #191224B3;
         }
 
         /* OS WINDOW */
@@ -399,7 +407,7 @@
 <body>
 
     <main class="desktop">
-        <h1>BLOOM.monster</h1>
+        <h1>BLOOMIE.monster</h1>
     </main>
 
     <!-- OS WINDOW -->
