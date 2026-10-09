@@ -1,15 +1,9 @@
-
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>⚡ BLOOM-OS v2.6 // Spooky Cutie Sanctuary ⚡</title>
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-      <script src="script.js" defer></script>
-
+    <title>⚡ BLOOM-OS v3.18 // Unhinged Goth Sanctuary ⚡</title>
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,133 +11,952 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Fredoka:wght@400;500;600;700&family=Press+Start+2P&family=VT323&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Fredoka:wght@400;500;600;700&family=Pixelify+Sans:wght@500;700&family=Silkscreen:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/adlibitum" rel="stylesheet">
+    <link href="fonts.css" rel="stylesheet">
 
-
-<Style>
-        .spiral-bg {
-            background: radial-gradient(circle, repeating-conic-gradient(#ff66b2 0 15deg, #0a080d 15deg 30deg));
-            animation: spinSpiral 30s linear infinite;
-            opacity: 0.08;
+    <style>
+        :root {
+            --void: #050406;
+            --void-card: #0d0a12;
+            --bubble-pink: #ff77b8;
+            --hot-pink: #ff2a8d;
+            --goth-purple: #1e0c24;
+            --lavender: #f3a8dc;
+            --dark-border: #3d163d;
+            --font-mono: 'VT323', monospace;
+            --font-silkscreen: 'Silkscreen', sans-serif;
+            --font-tallgoth: 'Adlibitum', cursive;
         }
 
-        @keyframes spinSpiral {
-            0% { transform: scale(3.5) rotate(0deg); }
-            100% { transform: scale(3.5) rotate(360deg); }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
-  body {
-    background: #0d0a12f5!important;
-  }
-  H1 {
-    FONT-FAMILY: Creepster;
-    COLOR: rgba(255,119,184)!important;
-    font-size: 72pt!important;
-  }
-  
-img.bluci {
-  opacity: 0.6;
-  transition: opacity 0.3s ease; /* Smooth fade effect */
-  display: block;
-    transition: opacity 0.3s ease-in-out; 
+        body {
+            background-color: var(--void);
+            color: #e2e8f0;
+            min-height: 100vh;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        .desktop {
+            padding: 24px;
+        }
+
+        .desktop h1 {
+            font-family: 'Creepster', cursive;
+            color: #ff77b8 !important;
+            font-size: 7rem;
+            text-align: center;
+            text-shadow: 5px 2px 0px #191224B3, 1px 0px 0px #ff77b8;
+            letter-spacing: 2px;
+            line-height: 1;
+        }
+
+        /* OS WINDOW */
+        .os-window {
+            position: absolute;
+            width: 440px;
+            height: 620px;
+            top: 40px;
+            left: 60px;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid var(--lavender);
+            background-color: rgba(13, 10, 18, 0.96);
+            backdrop-filter: blur(12px);
+            border-radius: 6px;
+            overflow: visible;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(243,168,220,0.25);
+            z-index: 100;
+        }
+
+        .os-window.hidden { display: none; }
+
+        /* WISPY ORGANIC SMOKE PUFFS */
+        .smoke-puff {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, var(--puff-color) 0%, rgba(255,255,255,0.05) 70%, transparent 100%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 150;
+            opacity: 0;
+            filter: blur(8px);
+            animation: wispyDrift 1.8s ease-out forwards;
+        }
+
+        @keyframes wispyDrift {
+            0% { transform: scale(0.3) translateY(0) rotate(0deg); opacity: 0; }
+            25% { opacity: 0.3; }
+            100% { transform: scale(1.8) translateY(-100px) translateX(var(--drift-x)) rotate(25deg); opacity: 0; }
+        }
+
+        /* WINDOW HEADER */
+        .window-header {
+            background: linear-gradient(90deg, var(--lavender) 0%, var(--goth-purple) 100%);
+            color: #000;
+            padding: 8px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: move;
+        }
+
+        .window-title {
+            font-family: var(--font-silkscreen);
+            font-size: 0.95rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .window-controls { display: flex; gap: 6px; }
+        .window-controls button {
+            width: 20px; height: 20px; border: none; border-radius: 4px;
+            font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px;
+        }
+        .btn-minimize { background-color: rgba(0,0,0,0.3); color: #fff; }
+        .btn-close { background-color: #dc2626; color: #fff; }
+
+        /* WINDOW BODY */
+        .window-body {
+            padding: 14px;
+            overflow-y: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-bottom: 1px solid var(--dark-border);
+    padding-bottom: 10px;
+}
+/* New wrapper to center text in the leftover space */
+.profile-text-group {
+    flex: 1;                 /* Takes up all the remaining space */
+    text-align: center;      /* Centers the text inside */
 }
 
-/* Hover state: 100% visible */
-img.bluci:hover {
-  opacity: 1.0;
-  display: block;
+        .profile-avatar {
+            width: 50px; height: 50px; border-radius: 50%;
+            border: 2px solid var(--bubble-pink); background-color: var(--goth-purple);
+            display: flex; align-items: center; justify-content: center; font-size: 24px;
+            box-shadow: 0 0 12px rgba(255, 119, 184, 0.4); flex-shrink: 0;
+        }
+
+.profile-info h3 {
+    font-family: var(--font-tallgoth);
+    text-transform: uppercase;
+    font-size: 2.8rem;
+    color: var(--bubble-pink);
+    line-height: 1;
 }
 
-
-        /* Hypnotic Spiral Background Overlay */
-        .spiral-bg {
-            background: radial-gradient(circle, repeating-conic-gradient(#ff66b2 0 15deg, #0a080d 15deg 30deg));
-            animation: spinSpiral 30s linear infinite;
-            opacity: 0.08;
-        }
-
-        @keyframes spinSpiral {
-            0% { transform: scale(3.5) rotate(0deg); }
-            100% { transform: scale(3.5) rotate(360deg); }
-        }
-
-        /* Floating Animation */
-        @keyframes floatSlow {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-6px) rotate(2deg); }
-        }
-
-        .floating {
-            animation: floatSlow 4s ease-in-out infinite;
-        }
-
-        .floating-delayed {
-            animation: floatSlow 5s ease-in-out 1.5s infinite;
-        }
-  
-
-</Style></head>
-  <script>        
-  /* 3. START MENU & HYPNO SPIRAL TOGGLE */
-        function toggleStartMenu() {
-            const menu = document.getElementById('startMenu');
-            menu.classList.toggle('hidden');
-        }
-
-        let spiralEnabled = true;
-        function toggleSpiral() {
-            const spiral = document.getElementById('spiralOverlay');
-            spiralEnabled = !spiralEnabled;
-            spiral.style.opacity = spiralEnabled ? '0.08' : '0';
-        }
-
-          /* 3. START MENU, CRT & HYPNO SPIRAL TOGGLES */
-function toggleStartMenu() {
-    const menu = document.getElementById('startMenu');
-    menu.classList.toggle('hidden');
+.profile-info p {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: var(--hot-pink);
+    margin-top: 2px;
 }
 
-function toggleSpiral() {
-    const spiral = document.getElementById('hypnoBg');
-    const btn = document.getElementById('hypnoBtn');
-    spiralEnabled = !spiralEnabled;
-    if (spiral) spiral.style.opacity = spiralEnabled ? '0.1' : '0';
-    if (btn) {
-        btn.style.opacity = spiralEnabled ? '1' : '0.4';
-    }
+        /* APP DOCK */
+        .app-dock {
+            display: flex; justify-content: center; gap: 10px;
+            background: rgba(0, 0, 0, 0.4); padding: 6px;
+            border-radius: 8px; border: 1px solid var(--dark-border);
+        }
+
+        .dock-icon {
+            width: 34px; 
+            height: 34px; 
+            border-radius: 8px;
+            background-color: var(--goth-purple); 
+            border: 1px solid var(--dark-border);
+            color: var(--lavender); 
+            font-size: 1rem; 
+            cursor: pointer;
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .dock-icon:hover, .dock-icon.active {
+            background-color: var(--bubble-pink); color: #000;
+            transform: translateY(-2px); box-shadow: 0 0 10px rgba(255, 119, 184, 0.5);
+        }
+
+        .game-view {
+            display: flex; flex-direction: column; gap: 8px;
+            background-color: rgba(0, 0, 0, 0.4); border: 1px solid var(--dark-border);
+            border-radius: 8px; padding: 10px;
+        }
+        .game-view.hidden { display: none; }
+
+        .minigame-title {
+            font-family: var(--font-mono); font-size: 1.3rem;
+            display: flex; justify-content: space-between; align-items: center;
+            letter-spacing: 2px; color: var(--bubble-pink);
+        }
+
+        .panel-badge {
+            color: var(--bubble-pink); font-size: 0.8rem; font-family: var(--font-mono); text-transform: uppercase;
+        }
+
+        .stat-row {
+            display: flex; justify-content: space-between;
+            font-family: var(--font-mono); font-size: 1.05rem; color: #cbd5e1;
+        }
+
+        .progress-bar {
+            width: 100%; background-color: #000; border-radius: 999px; height: 6px;
+            overflow: hidden; border: 1px solid rgba(255, 119, 184, 0.3);
+        }
+
+        .progress-fill-pink { background-color: var(--bubble-pink); height: 100%; width: 0%; border-radius: 999px; transition: width 0.3s ease; }
+
+        .minigame-actions {
+            display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 2px;
+        }
+
+        .game-btn {
+            background: var(--goth-purple); color: var(--lavender); border: 1px solid var(--dark-border);
+            padding: 6px 12px; border-radius: 6px; font-family: var(--font-mono); cursor: pointer; font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+        .game-btn:hover { background: var(--bubble-pink); color: #000; }
+        .game-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* STRAIN TRAY */
+        .strain-tray {
+            display: flex; align-items: center; justify-content: center; gap: 15px;
+            background: #120918; border: 1px solid var(--dark-border); border-radius: 6px; padding: 6px 10px;
+        }
+        .strain-tray-label { font-family: var(--font-mono); font-size: 0.85rem; color: var(--lavender); }
+        .strain-icons-wrapper { display: flex; gap: 10px; }
+        .strain-icon-btn {
+            position: relative; background: #1c0e24; border: 1px solid var(--dark-border); border-radius: 6px;
+            width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s ease;
+        }
+        .strain-icon-btn:hover, .strain-icon-btn.active {
+            border-color: var(--bubble-pink); background: var(--goth-purple); transform: scale(1.1); box-shadow: 0 0 8px rgba(255, 119, 184, 0.4);
+        }
+        .strain-icon-btn svg { width: 26px; height: 26px; }
+        .strain-icon-btn::after {
+            content: attr(data-tooltip); position: absolute; bottom: 42px; left: 50%;
+            transform: translateX(-50%) translateY(4px); background: var(--bubble-pink); color: #000;
+            font-family: var(--font-mono); font-size: 0.75rem; font-weight: bold; padding: 2px 6px;
+            border-radius: 4px; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s ease, transform 0.2s ease; z-index: 20; box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+        .strain-icon-btn:hover::after { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        .nug-workspace {
+            position: relative; height: 110px; background: #110816; border: 1px dashed var(--dark-border);
+            border-radius: 6px; display: flex; align-items: center; justify-content: space-around; padding: 0 15px; overflow: hidden;
+        }
+        .bong-container { display: flex; flex-direction: column; align-items: center; }
+        .svg-bong { width: 55px; height: 90px; filter: drop-shadow(0 0 6px rgba(243, 168, 220, 0.3)); }
+        
+        .svg-nug {
+            position: relative;
+            width: 65px; height: 65px; cursor: grab;
+            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.8));
+            transition: transform 0.05s linear;
+        }
+        .svg-nug:active { cursor: grabbing; }
+
+        /* --- PET TAMAGOTCHI TAB (`GOTH_PET.EXE`) --- */
+        .pet-workspace {
+            position: relative; height: 135px; background: #120918; border: 1px solid var(--dark-border);
+            border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 4px; overflow: visible;
+        }
+
+        /* LUXURY QUILTED COFFIN BED WITH CROSS ICONOGRAPHY */
+        .goth-coffin-btn {
+            position: absolute;
+            bottom: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.2s ease;
+            z-index: 10;
+        }
+        .goth-coffin-btn:hover {
+            transform: scale(1.1);
+        }
+        .svg-coffin {
+            width: 82px;
+            height: 58px;
+            filter: drop-shadow(0 0 10px rgba(255, 119, 184, 0.5));
+        }
+        
+        /* Fang Container */
+        .pet-stage {
+            position: absolute;
+            top: 4px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+            z-index: 9999;
+            transition: left 0.3s ease, top 0.3s ease;
+        }
+        .pet-stage.following {
+            position: fixed !important;
+            pointer-events: none;
+        }
+
+        .svg-pet {
+            width: 72px; height: 65px; 
+            filter: drop-shadow(0 0 10px rgba(255, 119, 184, 0.6));
+            transition: transform 0.3s ease;
+        }
+
+        /* AWAKE VS SLEEPING BAT STATES */
+        .bat-awake { display: block; }
+        .bat-sleep { display: none; transform-origin: 50px 45px; transform: rotate(180deg); }
+        .pet-stage.sleeping .bat-awake { display: none; }
+        .pet-stage.sleeping .bat-sleep { display: block; }
+
+        /* MANGA-SKEWED SPEECH BUBBLE */
+        .pet-bubble {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            font-weight: none;
+            color: var(--lavender);
+            background: rgba(0,0,0,0.85);
+            padding: 2px 8px;
+            z-index: 1;
+            border-radius: 4px;
+            border: 1px solid var(--bubble-pink);
+            box-shadow: 2px 2px 0px rgba(255, 42, 141, 0.4);
+            transform: rotate(-7deg) skewX(0deg);
+            white-space: nowrap;
+        }
+
+        /* FLOATING GOTHIC HEARTS */
+        .goth-heart {
+            position: absolute;
+            color: var(--hot-pink);
+            font-size: 1rem;
+            pointer-events: none;
+            z-index: 10000;
+            filter: drop-shadow(0 0 5px var(--bubble-pink));
+            animation: floatHeart 1.2s ease-out forwards;
+        }
+        @keyframes floatHeart {
+            0% { transform: translateY(0) scale(0.5); opacity: 1; }
+            100% { transform: translateY(-60px) scale(1.5); opacity: 0; }
+        }
+
+        @keyframes batFlutter {
+    0% { transform: translate(0px, 0px) rotate(0deg) scale(1); }
+    25% { transform: translate(-50px, -15px) rotate(-12deg) scale(1.05); }
+    50% { transform: translate(30px, -25px) rotate(8deg) scale(0.95); }
+    75% { transform: translate(-20px, -10px) rotate(-5deg) scale(1.02); }
+    100% { transform: translate(0px, 0px) rotate(0deg) scale(1); }
 }
 
-let crtEnabled = true;
-function toggleCRT() {
-    const body = document.getElementById('osBody');
-    const btn = document.getElementById('crtBtn');
-    crtEnabled = !crtEnabled;
-    if (crtEnabled) {
-        body.classList.add('crt-overlay');
-        if (btn) btn.style.opacity = '1';
-    } else {
-        body.classList.remove('crt-overlay');
-        if (btn) btn.style.opacity = '0.4';
-    }
+.pet-stage.flying {
+    animation: batFlutter 4s ease-in-out infinite;
 }
 
-          
-          </script>
+        .ouija-workspace {
+            position: relative; background: #160a20; border: 2px solid var(--lavender); border-radius: 6px; padding: 10px; text-align: center; font-family: var(--font-mono); box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
+        }
+        .ouija-arc-top { font-size: 0.95rem; letter-spacing: 4px; color: var(--bubble-pink); margin-bottom: 2px; }
+        .ouija-arc-mid { font-size: 0.85rem; letter-spacing: 2px; color: var(--lavender); margin-bottom: 6px; }
+        .ouija-planchette-board { position: relative; height: 45px; background: #0d0612; border-radius: 4px; display: flex; align-items: center; justify-content: center; border: 1px dashed var(--dark-border); }
+        .svg-planchette { position: absolute; width: 40px; height: 40px; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); filter: drop-shadow(0 0 6px var(--bubble-pink)); }
 
-  <body>
-    <div id="spiralOverlay" class="fixed inset-0 spiral-bg pointer-events-none z-0 transition-opacity duration-700"></div>
+        .smoke-log {
+            font-family: var(--font-mono); font-size: 0.95rem; color: var(--lavender); background: rgba(0,0,0,0.5); padding: 8px; border-radius: 6px; border-left: 2px solid var(--bubble-pink); display: flex; align-items: center; white-space: pre-wrap; word-break: break-word; min-height: 38px;
+        }
+        .terminal-cursor { display: inline-block; width: 7px; height: 13px; background-color: var(--bubble-pink); margin-left: 4px; animation: cursorBlink 0.8s infinite steps(1); }
+        @keyframes cursorBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-<center><div style="width: 80%; align: top-center; padding: 50px;"><h1>bloomie.monster</h1>
+        .taskbar {
+            position: fixed; bottom: 0; left: 0; right: 0; height: 48px; background-color: rgba(13, 10, 18, 0.95); border-top: 2px solid rgba(255, 119, 184, 0.4); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; z-index: 50;
+        }
+        .start-btn {
+            background: linear-gradient(180deg, var(--lavender) 0%, var(--goth-purple)); color: #000; border: 2px solid var(--goth-purple); padding: 6px 16px; font-family: var(--font-mono); font-size: 1.2rem; font-weight: bold; border-radius: 4px; cursor: pointer; box-shadow: 2px 2px 0px var(--void); display: flex; align-items: center; gap: 5px;
+        }
+        .taskbar-clock { font-family: var(--font-mono); font-size: 1.3rem; color: var(--lavender); }
+    </style>
+</head>
+<body>
 
-<img width="75%"class="bluci" src="/assets/bloomienluci.png"><p>
-  <button onclick="toggleSpiral(); toggleStartMenu();" class="w-full text-left py-1.5 px-2 hover:bg-gothPurple rounded font-mono text-xs text-bubblePink flex items-center gap-2">
-                        <i class="fa-solid fa-compact-disc"></i> Toggle Hypno Spiral
-                    </button><p>
-my personal website &lt;3<p>
-<p>enjoy it or dont </p>
-this is under construction :)
+    <main class="desktop">
+        <h1>BLOOM.monster</h1>
+    </main>
 
-</div>
-</center>
+    <!-- OS WINDOW -->
+    <div id="win-startmenu" class="os-window hidden">
+        <div class="window-header">
+            <span class="window-title">
+                <i class="fa-solid fa-user-bat"></i> PROFILE.EXE
+            </span>
+            <div class="window-controls">
+                <button onclick="minimizeWindow('win-startmenu')" class="btn-minimize">-</button>
+                <button onclick="closeWindow('win-startmenu')" class="btn-close">×</button>
+            </div>
+        </div>
+        
+        <div class="window-body">
+            <!-- Profile Header -->
+            <div class="profile-header">
+                <div class="profile-avatar">🦇</div>
+<div class="profile-text-group">
+        <div class="profile-info">
+            <h3>Bloomie</h3>
+            <p>Status: Unhinged Code Goblin ✨</p>
+        </div>
+    </div>
+            </div>
 
-  </body> </html>
+            <!-- APP DOCK -->
+            <div class="app-dock">
+                <button onclick="switchTab('sesh', event)" class="dock-icon active" title="3 AM Sesh">
+                    <i class="fa-solid fa-seedling"></i>
+                </button>
+<button onclick="switchTab('pet', event)" class="dock-icon" title="Goth Tamagotchi">
+    <i class="fa-solid fa-skull"></i>
+</button>
+                <button onclick="switchTab('spooky', event)" class="dock-icon" title="Spooky Vibes">
+                    <i class="fa-solid fa-ghost"></i>
+                </button>
+            </div>
+
+            <!-- 1. 3 AM SESH -->
+            <div id="tab-sesh" class="game-view">
+                <div class="minigame-title">
+                    <span>🌿 3AM_SESH.EXE</span>
+                    <span id="chill-status" class="panel-badge">Shake Nug</span>
+                </div>
+
+                <div class="nug-workspace" id="nug-workspace">
+                    <div class="bong-container" title="Your 3 AM Piece">
+                        <svg class="svg-bong" viewBox="0 0 100 140">
+                            <path d="M 35 90 L 15 130 Q 12 135 18 135 L 82 135 Q 88 135 85 130 L 65 90 Z" fill="#2d1330" stroke="#f3a8dc" stroke-width="3" stroke-linejoin="round"/>
+                            <path d="M 23 115 L 77 115 Q 82 135 82 135 L 18 135 Q 18 115 23 115 Z" fill="rgba(255, 119, 184, 0.4)"/>
+                            <rect x="38" y="25" width="24" height="68" fill="#1e0c24" stroke="#f3a8dc" stroke-width="3" rx="3"/>
+                            <rect x="34" y="20" width="32" height="8" fill="#ff77b8" rx="2" stroke="#000" stroke-width="1"/>
+                            <line x1="68" y1="95" x2="38" y2="70" stroke="#f3a8dc" stroke-width="4" stroke-linecap="round"/>
+                            <circle id="bowl-piece" cx="72" cy="98" r="8" fill="#ff77b8" stroke="#000" stroke-width="2"/>
+                        </svg>
+                    </div>
+
+                    <svg id="svg-nug" class="svg-nug" viewBox="0 0 100 100" onmousedown="startNugDrag(event)" title="Click & drag around to grind!">
+                        <path id="nug-base" fill="#7cb342" stroke="#33691e" stroke-width="2.5" d="M 35 30 Q 25 20 40 15 Q 55 10 65 20 Q 80 15 85 30 Q 95 45 85 60 Q 90 75 75 85 Q 60 95 45 85 Q 25 90 20 70 Q 10 50 25 40 Z"/>
+                        <path id="nug-highlight" fill="#9ccc65" d="M 38 25 Q 50 18 62 28 Q 75 35 70 50 Q 60 60 45 55 Q 30 50 38 25 Z"/>
+                        <path fill="#558b2f" d="M 18 45 Q 5 40 10 55 Q 18 58 22 50 Z"/>
+                        <path fill="#558b2f" d="M 75 72 Q 92 82 85 68 Q 72 65 75 72 Z"/>
+                        <path fill="#558b2f" d="M 70 20 Q 85 12 78 28 Q 68 30 70 20 Z"/>
+                        <path stroke="#ff8f00" stroke-width="2.5" stroke-linecap="round" fill="none" d="M 30 45 Q 40 35 48 45"/>
+                        <path stroke="#ff8f00" stroke-width="2" stroke-linecap="round" fill="none" d="M 55 52 Q 65 62 70 52"/>
+                        <path stroke="#ff8f00" stroke-width="2.5" stroke-linecap="round" fill="none" d="M 40 70 Q 50 65 55 75"/>
+                    </svg>
+                </div>
+
+                <div class="strain-tray">
+                    <span class="strain-tray-label">Strain:</span>
+                    <div class="strain-icons-wrapper">
+                        <button class="strain-icon-btn active" id="btn-og" data-tooltip="OG Kush" onclick="setStrain('og')">
+                            <svg viewBox="0 0 100 100"><path fill="#7cb342" stroke="#33691e" stroke-width="3" d="M 35 30 Q 25 20 40 15 Q 55 10 65 20 Q 80 15 85 30 Q 95 45 85 60 Q 90 75 75 85 Q 60 95 45 85 Q 25 90 20 70 Q 10 50 25 40 Z"/></svg>
+                        </button>
+                        <button class="strain-icon-btn" id="btn-purple" data-tooltip="Purple Punch" onclick="setStrain('purple')">
+                            <svg viewBox="0 0 100 100"><path fill="#8e24aa" stroke="#4a148c" stroke-width="3" d="M 35 30 Q 25 20 40 15 Q 55 10 65 20 Q 80 15 85 30 Q 95 45 85 60 Q 90 75 75 85 Q 60 95 45 85 Q 25 90 20 70 Q 10 50 25 40 Z"/></svg>
+                        </button>
+                        <button class="strain-icon-btn" id="btn-pink" data-tooltip="Pink Gas" onclick="setStrain('pink')">
+                            <svg viewBox="0 0 100 100"><path fill="#ec407a" stroke="#ad1457" stroke-width="3" d="M 35 30 Q 25 20 40 15 Q 55 10 65 20 Q 80 15 85 30 Q 95 45 85 60 Q 90 75 75 85 Q 60 95 45 85 Q 25 90 20 70 Q 10 50 25 40 Z"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="stat-row">
+                    <span>CHILL RESONANCE</span> <span id="chill-text">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div id="chill-fill" class="progress-fill-pink" style="width: 0%;"></div>
+                </div>
+                <div class="minigame-actions">
+                    <button id="pack-btn" onclick="packBowl()" class="game-btn" disabled>Pack Bowl</button>
+                    <button id="rip-btn" onclick="takeRip()" class="game-btn" disabled>Take Rip 💨</button>
+                </div>
+                <div id="smoke-log" class="smoke-log">> Drag & shake bud around to grind, pack bowl, and take a hit!</div>
+            </div>
+
+            <!-- 2. GOTH TAMAGOTCHI (`GOTH_PET.EXE`) -->
+            <div id="tab-pet" class="game-view hidden">
+                <div class="minigame-title">
+                    <span>🦇 GOTH_PET.EXE</span>
+                    <span id="pet-status" class="panel-badge">Sleeping</span>
+                </div>
+                <div class="pet-workspace" id="pet-workspace">
+                    <!-- LUXURY QUILTED COFFIN BED WITH CROSS ICONOGRAPHY -->
+                    <button class="goth-coffin-btn" onclick="tuckInPet()" title="Click to tuck Fang into coffin bed!">
+                        <svg class="svg-coffin" viewBox="0 0 100 140">
+                            <!-- Outer Coffin Frame -->
+                            <polygon points="50,5 85,25 90,105 50,135 10,105 15,25" fill="#14071a" stroke="#f3a8dc" stroke-width="4" stroke-linejoin="round"/>
+                            <!-- Velvet Inner Lining -->
+                            <polygon points="50,12 78,28 82,98 50,122 18,98 22,28" fill="#1e0c24" stroke="#ff77b8" stroke-width="2"/>
+                            <!-- Quilted Cross Relic Lining Inside Lid -->
+                            <g stroke="#ff77b8" stroke-width="2.5" stroke-linecap="round">
+                                <line x1="50" y1="30" x2="50" y2="95"/>
+                                <line x1="34" y1="52" x2="66" y2="52"/>
+                                <circle cx="50" cy="52" r="14" fill="none" stroke-dasharray="3,3"/>
+                                <circle cx="50" cy="52" r="4" fill="#ff77b8"/>
+                            </g>
+                        </svg>
+                    </button>
+
+                    <!-- Hanging Bat & Speech Bubble on Top -->
+                    <div class="pet-stage sleeping" id="pet-stage">
+                        <div id="pet-speech" class="pet-bubble">*zZz... spooky dreams...*</div>
+                        <svg class="svg-pet" viewBox="0 0 100 100">
+                            <!-- AWAKE BAT DESIGN -->
+                            <g class="bat-awake">
+                              <svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+                                <style>.a{fill:#2d1d3a;stroke:#ff77b8;stroke-width:1.5}.b{fill:#2d1d3a;stroke:#ff77b8}.c{fill:#15101d;stroke:#ff77b8;stroke-width:1.5}.d{fill:#ff77b8}</style>
+                                <path class="a" d="m32 28q-20-22-30-4 14 6 20 18 10-8 20 0 6-12 20-18-10-18-30 4z"/>
+                                <path class="b" d="m25.4 17.8q-6.9-5.6 0.2-10.7 4.9 2.3 5.6 8.6z"/>
+                                <path class="b" d="m38.7 17.8q6.9-5.6-0.2-10.7-4.9 2.3-5.6 8.6z"/>
+                                <path class="c" d="m32 36c-5.5 0-10-4.5-10-10 0-5.5 4.5-10 10-10 5.5 0 10 4.5 10 10 0 5.5-4.5 10-10 10z"/>
+                                <path class="d" d="m28 27c-1.1 0-2-0.9-2-2 0-1.1 0.9-2 2-2 1.1 0 2 0.9 2 2 0 1.1-0.9 2-2 2z"/>
+                                <path class="d" d="m36 27c-1.1 0-2-0.9-2-2 0-1.1 0.9-2 2-2 1.1 0 2 0.9 2 2 0 1.1-0.9 2-2 2z"/>
+                            </svg>
+                            </g>
+
+                            <!-- SLEEPING BAT DESIGN (Slightly tweaked wings folded in) -->
+                            <g class="bat-sleep">
+                                         
+        <!-- LEFT RIBBED EAR -->
+        <!-- Outer ear shape -->
+        <path d="M 21 18 Q 15 8 26 5 Q 31 10 29 18 Z" fill="#2d1d3a" stroke="#ff77b8" stroke-width="1"/>
+        <!-- Inner ribbed segments -->
+        <path d="M 22 16 Q 25 14 28 16" stroke="#ff77b8" stroke-width="1" fill="none"/>
+        <path d="M 22 13 Q 25 11 28 13" stroke="#ff77b8" stroke-width="1" fill="none"/>
+        <path d="M 23 10 Q 25 8 27 10" stroke="#ff77b8" stroke-width="1" fill="none"/>
+
+        <!--  RIGHT RIBBED EAR  -->
+        <!-- Outer ear shape -->
+        <path d="M 43 18 Q 49 8 38 5 Q 33 10 35 18 Z" fill="#2d1d3a" stroke="#ff77b8" stroke-width="1"/>
+        <!-- Inner ribbed segments -->
+        <path d="M 42 16 Q 39 14 36 16" stroke="#ff77b8" stroke-width="1" fill="none"/>
+        <path d="M 42 13 Q 39 11 36 13" stroke="#ff77b8" stroke-width="1" fill="none"/>
+        <path d="M 41 10 Q 39 8 37 10" stroke="#ff77b8" stroke-width="1" fill="none"/>
+
+        
+        <!-- Body / Wings wrapped around -->
+        <path d="M 16 16 C 9 36, 16 55, 32 58 C 4 56, 56 36, 48 16 Z" fill="#15101d" stroke="#ff77b8" stroke-width="1"/>
+
+        <!--  BURRITO OVERLAP WINGS  -->
+        <!-- Under-layer wing wrapping across -->
+        <path d="M 15 19 Q 5 40 31 63 Q 12 42 46 32 Z" fill="#21152d" stroke="#ff77b8" stroke-width="1.5"/>
+        <!-- Top-layer wing overlapping across the front -->
+        <path d="M 48 20 Q 60 40 31 63 Q 12 42 16 34 Z" fill="#2d1d3a" stroke="#ff77b8" stroke-width="1.5"/>
+
+        <!-- Sleeping Eyes / Closed Expression -->
+        <path d="M 23 28 Q 27 32 31 28" stroke="#ff77b8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <path d="M 33 28 Q 37 32 41 28" stroke="#ff77b8" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+
+      
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                <div class="stat-row">
+                    <span>FAMILIAR AFFECTION</span> <span id="pet-text">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div id="pet-fill" class="progress-fill-pink" style="width: 0%;"></div>
+                </div>
+                <div class="minigame-actions">
+                    <button onclick="feedPet()" class="game-btn">Feed Blood-Pop 🩸</button>
+                    <button onclick="petFamiliar()" class="game-btn">Headpats 🦇</button>
+                </div>
+                <div id="pet-log" class="smoke-log">> Fang is tucked in tight with their wings wrapped around them like a cloak.</div>
+            </div>
+
+            <!-- 3. OUIJA BOARD -->
+            <div id="tab-spooky" class="game-view hidden">
+                <div class="minigame-title">
+                    <span>🦇 OUIJA_BOARD.EXE</span>
+                    <span id="spooky-status" class="panel-badge">Ready</span>
+                </div>
+                <div class="ouija-workspace">
+                    <div class="ouija-arc-top">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</div>
+                    <div class="ouija-arc-mid">1 2 3 4 5 6 7 8 9 0 &nbsp;&nbsp; YES &nbsp; NO</div>
+                    <div class="ouija-planchette-board">
+                        <svg id="svg-planchette" class="svg-planchette" viewBox="0 0 100 100" style="transform: translate(0px, 0px);">
+                            <polygon points="50,10 90,90 10,90" fill="#f3a8dc" stroke="#000" stroke-width="4"/>
+                            <circle cx="50" cy="55" r="14" fill="#0d0a12" stroke="#ff77b8" stroke-width="3"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="stat-row">
+                    <span>GOTHIC MANIFESTATION</span> <span id="spooky-text">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div id="spooky-fill" class="progress-fill-pink" style="width: 0%;"></div>
+                </div>
+                <div class="minigame-actions">
+                    <button onclick="conjureSpirits()" class="game-btn">Conjure Spirits</button>
+                    <button onclick="protectPeace()" class="game-btn">Protect Your Peace</button>
+                </div>
+                <div id="spooky-log" class="smoke-log">> The planchette rests quietly on the board.</div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="taskbar">
+        <button onclick="openWindow('win-startmenu')" class="start-btn">
+            <span>🦇</span> BLOOM
+        </button>
+        <span class="taskbar-clock">12:00 PM</span>
+    </footer>
+
+    <script>
+        let activeZIndex = 100;
+        let currentStrainColor = "rgba(124, 179, 66, 0.6)";
+
+        function openWindow(winId) {
+            const win = document.getElementById(winId);
+            if (!win) return;
+            win.classList.remove('hidden');
+            activeZIndex++;
+            win.style.zIndex = activeZIndex;
+            makeWindowDraggable(win);
+        }
+
+        function closeWindow(winId) {
+            const win = document.getElementById(winId);
+            if (win) win.classList.add('hidden');
+        }
+
+        function minimizeWindow(winId) { closeWindow(winId); }
+
+        function makeWindowDraggable(win) {
+            const header = win.querySelector('.window-header');
+            if (!header) return;
+            let isDragging = false, offsetX = 0, offsetY = 0;
+
+            header.onmousedown = (e) => {
+                isDragging = true;
+                activeZIndex++;
+                win.style.zIndex = activeZIndex;
+                offsetX = e.clientX - win.offsetLeft;
+                offsetY = e.clientY - win.offsetTop;
+
+                document.onmousemove = (me) => {
+                    if (!isDragging) return;
+                    win.style.left = `${Math.max(0, me.clientX - offsetX)}px`;
+                    win.style.top = `${Math.max(0, me.clientY - offsetY)}px`;
+                };
+                document.onmouseup = () => {
+                    isDragging = false;
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+                };
+            };
+        }
+
+        function switchTab(tabName, event) {
+            document.querySelectorAll('.game-view').forEach(v => v.classList.add('hidden'));
+            document.querySelectorAll('.dock-icon').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+            if (event && event.currentTarget) event.currentTarget.classList.add('active');
+        }
+
+        // --- STRAIN SELECTOR ---
+        function setStrain(strain) {
+            document.querySelectorAll('.strain-icon-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(`btn-${strain}`).classList.add('active');
+
+            let baseColor = "#7cb342", strokeColor = "#33691e", highlightColor = "#9ccc65";
+            let strainName = "OG Kush";
+            currentStrainColor = "rgba(124, 179, 66, 0.6)";
+
+            if (strain === 'purple') {
+                baseColor = "#8e24aa"; strokeColor = "#4a148c"; highlightColor = "#ab47bc";
+                strainName = "Purple Punch"; currentStrainColor = "rgba(142, 36, 170, 0.6)";
+            } else if (strain === 'pink') {
+                baseColor = "#ec407a"; strokeColor = "#ad1457"; highlightColor = "#f06292";
+                strainName = "Pink Gas"; currentStrainColor = "rgba(236, 64, 122, 0.6)";
+            }
+
+            document.getElementById('nug-base').setAttribute('fill', baseColor);
+            document.getElementById('nug-base').setAttribute('stroke', strokeColor);
+            document.getElementById('nug-highlight').setAttribute('fill', highlightColor);
+            
+            shredDistance = 0;
+            bowlPacked = false;
+            const nug = document.getElementById('svg-nug');
+            nug.style.display = 'block';
+            nug.style.transform = 'translate(0px, 0px) scale(1)';
+            document.getElementById('pack-btn').disabled = true;
+            document.getElementById('rip-btn').disabled = true;
+            document.getElementById('chill-status').innerText = "Shake Nug";
+            document.getElementById('bowl-piece').setAttribute('fill', '#ff77b8');
+            typeLog('smoke-log', `Switched to ${strainName}. Drag and shake around to grind!`);
+        }
+
+        // --- NUG DRAG & SHRED ---
+        let shredDistance = 0;
+        const targetShred = 600;
+        let bowlPacked = false;
+        let chillLevel = 0;
+
+        const weedLogs = [
+            "Bic lighter clicks... spark catches...",
+            "Deep breath in... chamber milky white...",
+            "Coughing your lungs out because you took too big of a hit lmao",
+            "Absolute cosmic transcendence reached. ✨"
+        ];
+
+        function startNugDrag(e) {
+            if (bowlPacked || shredDistance >= targetShred) return;
+            const nug = document.getElementById('svg-nug');
+            let startX = e.clientX;
+            let startY = e.clientY;
+            let currentX = 0;
+            let currentY = 0;
+
+            const onMouseMove = (me) => {
+                let dx = me.clientX - startX;
+                let dy = me.clientY - startY;
+                let dist = Math.sqrt((me.clientX - (startX + currentX))**2 + (me.clientY - (startY + currentY))**2);
+                
+                shredDistance += dist;
+                currentX = dx;
+                currentY = dy;
+                startX = me.clientX;
+                startY = me.clientY;
+
+                let rot = (Math.random() - 0.5) * 40;
+                let scale = Math.max(0.3, 1 - (shredDistance / targetShred) * 0.7);
+                nug.style.transform = `translate(${currentX}px, ${currentY}px) rotate(${rot}deg) scale(${scale})`;
+
+                let progress = Math.min(100, Math.round((shredDistance / targetShred) * 100));
+                document.getElementById('chill-status').innerText = `Shredding ${progress}%`;
+
+                if (shredDistance >= targetShred) {
+                    nug.style.display = 'none';
+                    document.getElementById('chill-status').innerText = "Ground 🍃";
+                    document.getElementById('pack-btn').disabled = false;
+                    document.getElementById('bowl-piece').setAttribute('fill', '#81c784');
+                    typeLog('smoke-log', "Bud successfully ground into fluffy shake!");
+                    cleanup();
+                }
+            };
+
+            const cleanup = () => {
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', cleanup);
+            };
+
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', cleanup);
+        }
+
+        function packBowl() {
+            bowlPacked = true;
+            document.getElementById('chill-status').innerText = "Loaded 🌿";
+            document.getElementById('pack-btn').disabled = true;
+            document.getElementById('rip-btn').disabled = false;
+            typeLog('smoke-log', "Bowl packed into the bong. Take a rip, bestie.");
+        }
+
+        function takeRip() {
+            const fillEl = document.getElementById('chill-fill');
+            const textEl = document.getElementById('chill-text');
+
+            if (!bowlPacked) return;
+
+            chillLevel = Math.min(100, chillLevel + 25);
+            fillEl.style.width = `${chillLevel}%`;
+            textEl.innerText = `${chillLevel}%`;
+
+            triggerSmokePuffs();
+            typeLog('smoke-log', weedLogs[Math.floor(Math.random() * weedLogs.length)]);
+
+            if (chillLevel >= 100) {
+                document.getElementById('chill-status').innerText = "Max Vibe 💀";
+                typeLog('smoke-log', "MAXIMUM CHILL. You are floating.");
+                bowlPacked = false;
+                document.getElementById('rip-btn').disabled = true;
+                document.getElementById('bowl-piece').setAttribute('fill', '#ff77b8');
+            }
+        }
+
+        function triggerSmokePuffs() {
+            const win = document.getElementById('win-startmenu');
+            const rect = win.getBoundingClientRect();
+
+            for (let i = 0; i < 4; i++) {
+                const puff = document.createElement('div');
+                puff.className = 'smoke-puff';
+                puff.style.setProperty('--puff-color', currentStrainColor);
+
+                let startX = (rect.width / 2) + (Math.random() - 0.5) * 180;
+                let startY = 160 + (i * 40) + (Math.random() * 20);
+                let driftX = (Math.random() - 0.5) * 140;
+
+                puff.style.left = `${startX}px`;
+                puff.style.top = `${startY}px`;
+                puff.style.setProperty('--drift-x', `${driftX}px`);
+
+                win.appendChild(puff);
+                setTimeout(() => puff.remove(), 1800);
+            }
+        }
+
+        // --- GOTH TAMAGOTCHI (`GOTH_PET.EXE`) ---
+        let petAffection = 0;
+        let isPetFollowingCursor = false;
+
+
+function feedPet() {
+            const stage = document.getElementById('pet-stage');
+            stage.classList.remove('sleeping');
+            stage.classList.add('flying'); // Make him flutter!
+            updatePetStats(34, "Fang devoured the blood-pop with zero hesitation 🩸", "*crunch crunch spooky noises*");
+        }
+
+function petFamiliar() {
+            const stage = document.getElementById('pet-stage');
+            stage.classList.remove('sleeping');
+            stage.classList.add('flying'); // Make him flutter!
+            updatePetStats(34, "You gave Fang headpats. They purr like a tiny chainsaw 🦇", "*happy bat purrs*");
+        }
+
+        function updatePetStats(amount, logMsg, speechBubble) {
+            const fillEl = document.getElementById('pet-fill');
+            const textEl = document.getElementById('pet-text');
+            const speechEl = document.getElementById('pet-speech');
+            const workspace = document.getElementById('pet-workspace');
+
+            petAffection = Math.min(100, petAffection + amount);
+            fillEl.style.width = `${petAffection}%`;
+            textEl.innerText = `${petAffection}%`;
+            speechEl.innerText = speechBubble;
+
+            spawnGothHearts(workspace);
+            typeLog('pet-log', logMsg);
+
+            if (petAffection >= 100 && !isPetFollowingCursor) {
+                isPetFollowingCursor = true;
+                document.getElementById('pet-status').innerText = "Adored 🦇";
+                typeLog('pet-log', "Fang is completely obsessed with you now. They broke out of the window to follow your cursor!");
+                speechEl.innerText = "🖤 I love you bestie 🖤";
+                enableCursorTracking();
+            }
+        }
+
+        function spawnGothHearts(container) {
+            for (let i = 0; i < 3; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'goth-heart';
+                heart.innerHTML = '🖤';
+                heart.style.left = `${40 + (Math.random() - 0.5) * 60}%`;
+                heart.style.top = `${50 + (Math.random() - 0.5) * 20}%`;
+                container.appendChild(heart);
+                setTimeout(() => heart.remove(), 1200);
+            }
+        }
+
+        function enableCursorTracking() {
+            const stage = document.getElementById('pet-stage');
+            stage.classList.add('following');
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isPetFollowingCursor) return;
+                stage.style.left = `${e.clientX - 35}px`;
+                stage.style.top = `${e.clientY - 35}px`;
+            });
+        }
+
+function tuckInPet() {
+            const stage = document.getElementById('pet-stage');
+            stage.classList.add('sleeping');
+            stage.classList.remove('flying'); // Stop flying when sleeping!
+
+            if (isPetFollowingCursor) {
+                isPetFollowingCursor = false;
+                stage.classList.remove('following');
+                stage.style.left = '';
+                stage.style.top = '';
+            }
+
+            document.getElementById('pet-speech').innerText = "*zZz... spooky dreams...*";
+            document.getElementById('pet-status').innerText = "Sleeping 💤";
+            typeLog('pet-log', "You tucked Fang back into their hanging spot. Wings wrapped tight over that gorgeous cross-lined coffin!");
+        }
+
+        // --- OUIJA ---
+        let spookyLevel = 0;
+        const ouijaPhrases = [
+            "THE SPIRITS SAY: FIX YOUR CSS BUGS",
+            "CODE GOBLINS ARE WATCHING YOU",
+            "DRINK SOME WATER BESTIE",
+            "THE DEMONS DEMAND MORE CAFFEINE",
+            "PARANORMAL VIBES IMMACULATE"
+        ];
+
+        function conjureSpirits() {
+            const fillEl = document.getElementById('spooky-fill');
+            const textEl = document.getElementById('spooky-text');
+            const planchette = document.getElementById('svg-planchette');
+
+            let randomX = (Math.random() - 0.5) * 160;
+            let randomY = (Math.random() - 0.5) * 15;
+            planchette.style.transform = `translate(${randomX}px, ${randomY}px) rotate(${(Math.random()-0.5)*30}deg)`;
+
+            spookyLevel = Math.min(100, spookyLevel + 34);
+            fillEl.style.width = `${spookyLevel}%`;
+            textEl.innerText = `${spookyLevel}%`;
+
+            typeLog('spooky-log', `[PLANCHETTE GLIDING] -> "${ouijaPhrases[Math.floor(Math.random() * ouijaPhrases.length)]}"`);
+
+            if (spookyLevel >= 100) {
+                document.getElementById('spooky-status').innerText = "Haunted 👻";
+                typeLog('spooky-log', "MAX MANIFESTATION. The dead have checked in.");
+            }
+        }
+
+        function protectPeace() {
+            document.getElementById('svg-planchette').style.transform = `translate(0px, 0px) rotate(0deg)`;
+            typeLog('spooky-log', "Shield activated. Planchette centered ✨");
+        }
+
+        function typeLog(elementId, text, speed = 18) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            el.innerHTML = '> <span class="log-text"></span><span class="terminal-cursor"></span>';
+            const textSpan = el.querySelector('.log-text');
+            let i = 0;
+            if (el.typingInterval) clearInterval(el.typingInterval);
+            el.typingInterval = setInterval(() => {
+                if (i < text.length) {
+                    textSpan.textContent += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(el.typingInterval);
+                }
+            }, speed);
+        }
+    </script>
+</body>
+</html>
